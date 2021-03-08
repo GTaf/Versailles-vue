@@ -1,7 +1,8 @@
 var express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const {Sequelize, DataTypes, json} = require('sequelize')
+const { Sequelize, DataTypes, json } = require('sequelize')
+const { Op } = require("sequelize");
 
 var app = express()
 app.use(cors())
@@ -39,12 +40,29 @@ let Sensor = database.define('sensor', {
   }
 })
 
-app.get('/:id/', async function(req, res) {
+app.get('/:id/:span/', async function (req, res) {
+  var dateSpan = 0;
+  switch (parseInt(req.params.span)) {
+    case 1:
+      dateSpan = 24 * 60 * 60 * 1000;
+      break;
+    case 2:
+      dateSpan = 7 * 24 * 60 * 60 * 1000;
+      break;
+    case 3:
+      dateSpan = 30 * 24 * 60 * 60 * 1000;
+      break;
+  }
   var measures = await Measures.findAll({
     raw: true,
-    attributes: ['value'],
+    attributes: ['value', 'createdAt'],
     where: {
-      sensorId: parseInt(req.params.id)
+      [Op.and]: [{
+        sensorId: parseInt(req.params.id),
+        createdAt: {
+          [Op.lt]: new Date(Date.now() - (60 * 60 * 1000)),
+        },
+      }]
     }
   });
   obj = JSON.stringify(measures)

@@ -6,7 +6,7 @@ export default {
   props: ["sensorId"],
   watch: {
     sensorId: function () {
-      this.getData("http://localhost:8081/" + this.sensorId);
+      this.getData("http://localhost:8081/" + this.sensorId + "/1/");
     },
     data: function () {
       this._data._chart.destroy();
@@ -48,13 +48,6 @@ export default {
               borderColor: "rgba(1, 116, 188, 0.50)",
               pointBackgroundColor: "rgba(171, 71, 188, 1)",
             },
-            {
-              label: "Ensoleillement",
-              data: [2, 2, 4, 3, 10, 12, 8, 10, 10, 10, 10],
-              backgroundColor: "transparent",
-              borderColor: "rgba(1, 216, 188, 0.50)",
-              pointBackgroundColor: "rgba(171, 71, 188, 1)",
-            },
           ],
         },
         {
@@ -69,7 +62,7 @@ export default {
     },
   },
   beforeMount() {
-    this.getData("http://localhost:8081/" + this.sensorId);
+    this.getData("http://localhost:8081/" + this.sensorId + "/1/");
   },
   mounted() {
     this.renderLineChart();
