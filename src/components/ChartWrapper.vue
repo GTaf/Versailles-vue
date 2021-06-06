@@ -40,6 +40,7 @@ export default {
 <style>
 ul.sensor {
   white-space: nowrap;
+display:inline-block;
   margin: 10px 10px;
 }
 
@@ -50,6 +51,7 @@ ul.sensor > li {
 
 ul.period {
   white-space: nowrap;
+display:inline-block;
   margin: 10px 10px;
 }
 
